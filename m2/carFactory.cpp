@@ -3,7 +3,6 @@
 
 CarFactory::CarPartType CarFactory::makePartOfCar(int selectedNumber, CarPartType curSelectionStep)
 {
-   
     if (curSelectionStep == Run_Test) return selectRunAndTest(selectedNumber, curSelectionStep);
     
     std::shared_ptr<IPartBuilder> partBuilder = selectPartBuilder(selectedNumber, curSelectionStep);

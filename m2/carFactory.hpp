@@ -81,10 +81,6 @@ public:
     }
 
 private:
-    void selectCarType(int answer);
-    void selectEngine(int answer);
-    void selectbrakeSystem(int answer);
-    void selectSteeringSystem(int answer);
     void runProducedCar();
     void proceedSteeringSystem();
     void proceedBrakeSystem();

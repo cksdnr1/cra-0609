@@ -26,9 +26,8 @@ std::shared_ptr&lt;IPartBuilder&gt; CarFactory::selectPartBuilder(int selectedNu
     if (curSelectionStep == CarType_Q) return std::make_shared&lt;CarTypeBuilder&gt;();
     if (curSelectionStep == Engine_Q) return std::make_shared&lt;EngineTypeBuilder&gt;();
     if (curSelectionStep == BrakeSystem_Q) return std::make_shared&lt;BrakeSystemBuilder&gt;();
-    if (curSelectionStep == SteeringSystem_Q) return std::make_shared&lt;SteeringSystemBuilder&gt;();</span>
-<span style = "background-color:#fdd">    return nullptr;</span>
-<span style = "background-color:#dfd">}</span>
+    if (curSelectionStep == SteeringSystem_Q) return std::make_shared&lt;SteeringSystemBuilder&gt;();
+}</span>
 
 CarFactory::CarPartType CarFactory::selectRunAndTest(int selectedNumber, CarPartType curSelectionStep)
 <span style = "background-color:#dfd">{
