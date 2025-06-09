@@ -1,6 +1,16 @@
 # cra-0609
 cra-0609
 
+# D1 O
+# D2 O
+# D3 O
+# D4 O
+# D5 O
+
+# D4 - 각 파츠 빌더 패턴 적용
+
+# D5 - Coverage image 
+
 # 링크
 https://github.com/JonJaryongLee/car-samsung
 
