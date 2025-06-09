@@ -8,6 +8,8 @@
 D4 - 각 파츠 빌더 패턴 적용
 
 # D5 - Coverage image 
+![image](https://github.com/user-attachments/assets/e74fd64d-97ae-4e12-81ce-815db54f94fe)
+
 
 ### 링크
 https://github.com/JonJaryongLee/car-samsung
