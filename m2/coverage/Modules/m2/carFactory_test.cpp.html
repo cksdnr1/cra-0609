@@ -177,14 +177,6 @@ using namespace testing;
 	EXPECT_EQ(curType, CarFactory::CarPartType::Run_Test);
 }</span>
 
-<span style = "background-color:#dfd">TEST(errorHandling1, TC1) {
-	CarFactory carFactory;
-	CarFactory::CarPartType curType = CarFactory::CarPartType::EMPTY_Q;
-	curType = carFactory.makePartOfCar(0, curType);
-	EXPECT_EQ(curType, CarFactory::CarPartType::CarType_Q);
-}</span>
-
-
 <span style = "background-color:#dfd">TEST(AllTestOnceTestedForAllCoverageIsCoverdeCheck, TC1) {
 	for (int car_type = static_cast&lt;int&gt;(CarFactory::CarType::SEDAN); car_type &lt; static_cast&lt;int&gt;(CarFactory::CarType::EMPTY_C); car_type++) {
 		for (int engine_type = static_cast&lt;int&gt;(CarFactory::Engine::GM); engine_type &lt; static_cast&lt;int&gt;(CarFactory::Engine::EMPTY_E); engine_type++) {

@@ -2,12 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <memory>
 
 #define CLEAR_SCREEN "\033[H\033[2J"
 
 const int REWIND = 0;
 
-
+class IPartBuilder;
 
 class CarFactory {
 public:
@@ -62,8 +63,22 @@ public:
 
 public:
     CarFactory() {};
-    void makeCar();
     CarPartType makePartOfCar(int selectedNumber, CarPartType curSelectionStep);
+
+    static void delay(int ms)
+    {
+        volatile int sum = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            for (int j = 0; j < 1000; j++)
+            {
+                for (int t = 0; t < ms; t++)
+                {
+                    sum++;
+                }
+            }
+        }
+    }
 
 private:
     void selectCarType(int answer);
@@ -76,42 +91,44 @@ private:
     void proceedEngine();
     void proceedCarType();
     void testProducedCar();
-   
-
-    
-
+    std::shared_ptr<IPartBuilder> selectPartBuilder(int selectedNumber, CarPartType curSelectionStep);
     CarPartType selectRunAndTest(int selectedNumber, CarPartType curSelectionStep);
 
-    CarPartType selectSteeringSystem(int selectedNumber, CarPartType curSelectionStep);
-
-    CarPartType selectBrakeSystem(int selectedNumber, CarPartType curSelectionStep);
-
-    CarPartType selectEngineType(int selectedNumber, CarPartType curSelectionStep);
-
-    CarPartType selectCarType(int selectedNumber, CarPartType step);
-
-    bool checkUserSelectionIsNumber(char  buf[100]);
-
-    void getUserSelection(char  buf[100]);
-
-    bool exitSelected(char  buf[100]);
-
-    void printSelectionOfStep(CarPartType step);
-
-    void printSelectionOfRunAndTest();
-
-    void printSelectionOfSteeringSystem();
-
-    void printSelectionOfBrakeSystem();
-
-    void printSelectionOfEngine();
-
-    void printSelectionOfCarType();
     int isValidCheck();
 
 private:
-    int carPartStroage[10];
-    
-    CarPartType curSelectionStep = CarType_Q;
+    int carPartStorage[10];
+};
 
+class IPartBuilder {
+public:
+    virtual CarFactory::CarPartType selectStep(int selectedNumber, CarFactory::CarPartType curSelectionStep, int carPartStroage[]) = 0;
+    virtual void buildPart(int selectedNumber, int carPartStorage[]) =0;
+};
+
+class CarTypeBuilder : public IPartBuilder {
+public:
+    CarFactory::CarPartType selectStep(int selectedNumber, CarFactory::CarPartType curSelectionStep, int carPartStroage[]) override;
+    void buildPart(int selectedNumber, int carPartStorage[]) override;
+};
+
+class EngineTypeBuilder : public IPartBuilder {
+public:
+    CarFactory::CarPartType selectStep(int selectedNumber,
+        CarFactory::CarPartType curSelectionStep, int carPartStroage[]) override;
+    void buildPart(int selectedNumber, int carPartStorage[]) override;
+};
+
+class BrakeSystemBuilder : public IPartBuilder {
+public:
+    CarFactory::CarPartType selectStep(int selectedNumber,
+        CarFactory::CarPartType curSelectionStep, int carPartStroage[]) override;
+    void buildPart(int selectedNumber, int carPartStorage[]) override;
+};
+
+class SteeringSystemBuilder : public IPartBuilder {
+public:
+    CarFactory::CarPartType selectStep(int selectedNumber,
+        CarFactory::CarPartType curSelectionStep, int carPartStroage[]) override;
+    void buildPart(int selectedNumber, int carPartStorage[]) override;
 };

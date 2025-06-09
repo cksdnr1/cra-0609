@@ -12,157 +12,23 @@
 #include "carFactory.hpp"
 #pragma once
 
-void delay(int ms)
-<span style = "background-color:#dfd">{
-    volatile int sum = 0;
-    for (int i = 0; i &lt; 1000; i++)</span>
-    {
-<span style = "background-color:#dfd">        for (int j = 0; j &lt; 1000; j++)</span>
-        {
-<span style = "background-color:#dfd">            for (int t = 0; t &lt; ms; t++)</span>
-            {
-<span style = "background-color:#dfd">                sum++;
-            }
-        }
-    }
-}</span>
-
-void CarFactory::makeCar()
-<span style = "background-color:#fdd">{</span>
-    char userInputBuffer[100];
-<span style = "background-color:#fdd">    while (1)</span>
-    {
-<span style = "background-color:#fdd">        printSelectionOfStep(curSelectionStep);
-        getUserSelection(userInputBuffer);
-        if (exitSelected(userInputBuffer) == true) break;
-        if (checkUserSelectionIsNumber(userInputBuffer) == false) continue;
-        int selectedNumber = strtol(userInputBuffer, NULL, 10);
-        curSelectionStep = makePartOfCar(selectedNumber, curSelectionStep);
-    }
-}</span>
-
-void CarFactory::printSelectionOfStep(CarPartType step)
-<span style = "background-color:#fdd">{
-    if (step == CarType_Q) printSelectionOfCarType();
-    if (step == Engine_Q) printSelectionOfEngine();
-    if (step == BrakeSystem_Q) printSelectionOfBrakeSystem();
-    if (step == SteeringSystem_Q) printSelectionOfSteeringSystem();
-    if (step == Run_Test)printSelectionOfRunAndTest();
-    printf("===============================\n");
-    printf("INPUT &gt; ");</span>
-    return;
-<span style = "background-color:#fdd">}</span>
-
-
-void CarFactory::getUserSelection(char  buf[100])
-<span style = "background-color:#fdd">{
-    fgets(buf, sizeof(buf), stdin);</span>
-
-    // ¿£ÅÍ °³Çà¹®ÀÚ Á¦°Å
-<span style = "background-color:#fdd">    char* context = nullptr;
-    strtok_s(buf, "\r", &amp;context);
-    strtok_s(buf, "\n", &amp;context);
-}</span>
-
-bool CarFactory::exitSelected(char buf[100])
-<span style = "background-color:#fdd">{
-    bool isExitSelected = false;</span>
-
-<span style = "background-color:#fdd">    if (!strcmp(buf, "exit"))</span>
-    {
-<span style = "background-color:#fdd">        printf("¹ÙÀÌ¹ÙÀÌ\n");
-        isExitSelected = true;</span>
-    }
-
-<span style = "background-color:#fdd">    return isExitSelected;
-}</span>
-
-
-bool CarFactory::checkUserSelectionIsNumber(char  buf[100])
-<span style = "background-color:#fdd">{
-    bool isUserInputNumber = true;</span>
-    char* checkNumber;
-
-<span style = "background-color:#fdd">    strtol(buf, &amp;checkNumber, 10);</span>
-
-<span style = "background-color:#fdd">    if (*checkNumber != '\0')</span>
-    {
-<span style = "background-color:#fdd">        printf("ERROR :: ¼ýÀÚ¸¸ ÀÔ·Â °¡´É\n");
-        delay(800);
-        isUserInputNumber = false;</span>
-    }
-
-<span style = "background-color:#fdd">    return isUserInputNumber;</span>
-
-<span style = "background-color:#fdd">}</span>
-
 CarFactory::CarPartType CarFactory::makePartOfCar(int selectedNumber, CarPartType curSelectionStep)
-<span style = "background-color:#dfd">{
-    if (curSelectionStep == CarType_Q) return selectCarType(selectedNumber, curSelectionStep);
-    if (curSelectionStep == Engine_Q) return selectEngineType(selectedNumber, curSelectionStep);
-    if (curSelectionStep == BrakeSystem_Q) return selectBrakeSystem(selectedNumber, curSelectionStep);
-    if (curSelectionStep == SteeringSystem_Q) return selectSteeringSystem(selectedNumber, curSelectionStep);
-    if (curSelectionStep == Run_Test) return selectRunAndTest(selectedNumber, curSelectionStep);
-    return CarPartType::CarType_Q;
+<span style = "background-color:#dfd">{</span>
+   
+<span style = "background-color:#dfd">    if (curSelectionStep == Run_Test) return selectRunAndTest(selectedNumber, curSelectionStep);</span>
+    
+<span style = "background-color:#dfd">    std::shared_ptr&lt;IPartBuilder&gt; partBuilder = selectPartBuilder(selectedNumber, curSelectionStep);
+    return partBuilder-&gt;selectStep(selectedNumber, curSelectionStep, carPartStorage);
 }</span>
 
-CarFactory::CarPartType CarFactory::CarFactory::selectCarType(int selectedNumber, CarPartType curSelectionStep)
-<span style = "background-color:#dfd">    {
-        if ((selectedNumber &gt;= 1 &amp;&amp; selectedNumber &lt;= 3) == false) {
-            printf("ERROR :: Â÷·® Å¸ÀÔÀº 1 ~ 3 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
-            delay(800);
-            return curSelectionStep;</span>
-        }
-
-<span style = "background-color:#dfd">        selectCarType(selectedNumber);
-        delay(800);
-        return CarPartType::Engine_Q;
-    }</span>
-
-CarFactory::CarPartType CarFactory::selectEngineType(int selectedNumber, CarPartType curSelectionStep)
+std::shared_ptr&lt;IPartBuilder&gt; CarFactory::selectPartBuilder(int selectedNumber, CarPartType curSelectionStep)
 <span style = "background-color:#dfd">{
-    if ((selectedNumber &gt;= 0 &amp;&amp; selectedNumber &lt;= 4) == false) {
-        printf("ERROR :: ¿£ÁøÀº 1 ~ 4 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
-        delay(800);
-        return curSelectionStep;</span>
-    }
-
-<span style = "background-color:#dfd">    if (selectedNumber == REWIND) return CarPartType::CarType_Q;</span>
-
-<span style = "background-color:#dfd">    selectEngine(selectedNumber);
-    delay(800);
-    return  CarPartType::BrakeSystem_Q;
-}</span>
-
-CarFactory::CarPartType CarFactory::selectBrakeSystem(int selectedNumber, CarPartType curSelectionStep)
-<span style = "background-color:#dfd">{
-    if ((selectedNumber &gt;= 0 &amp;&amp; selectedNumber &lt;= 3) == false) {
-        printf("ERROR :: Á¦µ¿ÀåÄ¡´Â 1 ~ 3 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
-        delay(800);
-        return curSelectionStep;</span>
-    }
-
-<span style = "background-color:#dfd">    if (selectedNumber == REWIND) return CarPartType::Engine_Q;</span>
-
-<span style = "background-color:#dfd">    selectbrakeSystem(selectedNumber);
-    delay(800);
-    return CarPartType::SteeringSystem_Q;
-}</span>
-
-CarFactory::CarPartType CarFactory::selectSteeringSystem(int selectedNumber, CarPartType curSelectionStep)
-<span style = "background-color:#dfd">{
-    if ((selectedNumber &gt;= 0 &amp;&amp; selectedNumber &lt;= 2) == false) {
-        printf("ERROR :: Á¶ÇâÀåÄ¡´Â 1 ~ 2 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
-        delay(800);
-        return curSelectionStep;</span>
-    }
-
-<span style = "background-color:#dfd">    if (selectedNumber == REWIND) return CarPartType::BrakeSystem_Q;</span>
-
-<span style = "background-color:#dfd">    selectSteeringSystem(selectedNumber);
-    delay(800);
-    return  CarPartType::Run_Test;
-}</span>
+    if (curSelectionStep == CarType_Q) return std::make_shared&lt;CarTypeBuilder&gt;();
+    if (curSelectionStep == Engine_Q) return std::make_shared&lt;EngineTypeBuilder&gt;();
+    if (curSelectionStep == BrakeSystem_Q) return std::make_shared&lt;BrakeSystemBuilder&gt;();
+    if (curSelectionStep == SteeringSystem_Q) return std::make_shared&lt;SteeringSystemBuilder&gt;();</span>
+<span style = "background-color:#fdd">    return nullptr;</span>
+<span style = "background-color:#dfd">}</span>
 
 CarFactory::CarPartType CarFactory::selectRunAndTest(int selectedNumber, CarPartType curSelectionStep)
 <span style = "background-color:#dfd">{
@@ -191,132 +57,16 @@ CarFactory::CarPartType CarFactory::selectRunAndTest(int selectedNumber, CarPart
     }
 <span style = "background-color:#dfd">}</span>
 
-void CarFactory::printSelectionOfRunAndTest()
-<span style = "background-color:#fdd">{
-    printf(CLEAR_SCREEN);
-    printf("¸ÚÁø Â÷·®ÀÌ ¿Ï¼ºµÇ¾ú½À´Ï´Ù.\n");
-    printf("¾î¶² µ¿ÀÛÀ» ÇÒ±î¿ä?\n");
-    printf("0. Ã³À½ È­¸éÀ¸·Î µ¹¾Æ°¡±â\n");
-    printf("1. RUN\n");
-    printf("2. Test\n");
-}</span>
-
-void CarFactory::printSelectionOfSteeringSystem()
-<span style = "background-color:#fdd">{
-    printf(CLEAR_SCREEN);
-    printf("¾î¶² Á¶ÇâÀåÄ¡¸¦ ¼±ÅÃÇÒ±î¿ä?\n");
-    printf("0. µÚ·Î°¡±â\n");
-    printf("1. BOSCH\n");
-    printf("2. MOBIS\n");
-}</span>
-
-void CarFactory::printSelectionOfBrakeSystem()
-<span style = "background-color:#fdd">{
-    printf(CLEAR_SCREEN);
-    printf("¾î¶² Á¦µ¿ÀåÄ¡¸¦ ¼±ÅÃÇÒ±î¿ä?\n");
-    printf("0. µÚ·Î°¡±â\n");
-    printf("1. MANDO\n");
-    printf("2. CONTINENTAL\n");
-    printf("3. BOSCH\n");
-}</span>
-
-void CarFactory::printSelectionOfEngine()
-<span style = "background-color:#fdd">{
-    printf(CLEAR_SCREEN);
-    printf("¾î¶² ¿£ÁøÀ» Å¾ÀçÇÒ±î¿ä?\n");
-    printf("0. µÚ·Î°¡±â\n");
-    printf("1. GM\n");
-    printf("2. TOYOTA\n");
-    printf("3. WIA\n");
-    printf("4. °íÀå³­ ¿£Áø\n");
-}</span>
-
-void CarFactory::printSelectionOfCarType()
-<span style = "background-color:#fdd">{
-    printf(CLEAR_SCREEN);</span>
-
-<span style = "background-color:#fdd">    printf("        ______________\n");
-    printf("       /|            | \n");
-    printf("  ____/_|_____________|____\n");
-    printf(" |                      O  |\n");
-    printf(" '-(@)----------------(@)--'\n");
-    printf("===============================\n");
-    printf("¾î¶² Â÷·® Å¸ÀÔÀ» ¼±ÅÃÇÒ±î¿ä?\n");
-    printf("1. Sedan\n");
-    printf("2. SUV\n");
-    printf("3. Truck\n");
-}</span>
-
-void CarFactory::selectCarType(int selectedNumber)
-<span style = "background-color:#dfd">{
-    carPartStroage[CarType_Q] = selectedNumber;
-    if (selectedNumber == CarType::SEDAN)
-        printf("Â÷·® Å¸ÀÔÀ¸·Î SedanÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-    if (selectedNumber == CarType::SUV)
-        printf("Â÷·® Å¸ÀÔÀ¸·Î SUVÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-    if (selectedNumber == CarType::TRUCK)
-        printf("Â÷·® Å¸ÀÔÀ¸·Î TruckÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-}</span>
-
-void CarFactory::selectEngine(int selectedNumber)
-<span style = "background-color:#dfd">{
-    carPartStroage[Engine_Q] = selectedNumber;
-    if (selectedNumber == Engine::GM)
-        printf("GM ¿£ÁøÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-    if (selectedNumber == Engine::TOYOTA)
-        printf("TOYOTA ¿£ÁøÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-    if (selectedNumber == Engine::WIA)
-        printf("WIA ¿£ÁøÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-}</span>
-
-void CarFactory::selectbrakeSystem(int selectedNumber)
-<span style = "background-color:#dfd">{
-    carPartStroage[BrakeSystem_Q] = selectedNumber;
-    if (selectedNumber == BrakeSystem::MANDO)
-        printf("MANDO Á¦µ¿ÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-    if (selectedNumber == BrakeSystem::CONTINENTAL)
-        printf("CONTINENTAL Á¦µ¿ÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-    if (selectedNumber == BrakeSystem::BOSCH_B)
-        printf("BOSCH Á¦µ¿ÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-}</span>
-
-void CarFactory::selectSteeringSystem(int selectedNumber)
-<span style = "background-color:#dfd">{
-    carPartStroage[SteeringSystem_Q] = selectedNumber;
-    if (selectedNumber == SteeringSystem::BOSCH_S)
-        printf("BOSCH Á¶ÇâÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-    if (selectedNumber == SteeringSystem::MOBIS)
-        printf("MOBIS Á¶ÇâÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
-}</span>
-
 int CarFactory::isValidCheck()
 <span style = "background-color:#dfd">{
-    if (carPartStroage[CarType_Q] == SEDAN &amp;&amp; carPartStroage[BrakeSystem_Q] == CONTINENTAL)</span>
-    {
-<span style = "background-color:#dfd">        return false;</span>
-<span style = "background-color:#fdd">    }</span>
-<span style = "background-color:#dfd">    else if (carPartStroage[CarType_Q] == SUV &amp;&amp; carPartStroage[Engine_Q] == TOYOTA)</span>
-    {
-<span style = "background-color:#dfd">        return false;</span>
-<span style = "background-color:#fdd">    }</span>
-<span style = "background-color:#dfd">    else if (carPartStroage[CarType_Q] == TRUCK &amp;&amp; carPartStroage[Engine_Q] == WIA)</span>
-    {
-<span style = "background-color:#dfd">        return false;</span>
-<span style = "background-color:#fdd">    }</span>
-<span style = "background-color:#dfd">    else if (carPartStroage[CarType_Q] == TRUCK &amp;&amp; carPartStroage[BrakeSystem_Q] == MANDO)</span>
-    {
-<span style = "background-color:#dfd">        return false;</span>
-<span style = "background-color:#fdd">    }</span>
-<span style = "background-color:#dfd">    else if (carPartStroage[BrakeSystem_Q] == BOSCH_B &amp;&amp; carPartStroage[SteeringSystem_Q] != BOSCH_S)</span>
-    {
-<span style = "background-color:#dfd">        return false;</span>
-<span style = "background-color:#fdd">    }</span>
-    else
-    {
-<span style = "background-color:#dfd">        return true;</span>
-    }
-<span style = "background-color:#fdd">    return true;</span>
-<span style = "background-color:#dfd">}</span>
+    if (carPartStorage[CarType_Q] == SEDAN &amp;&amp; carPartStorage[BrakeSystem_Q] == CONTINENTAL)return false;
+    if (carPartStorage[CarType_Q] == SUV &amp;&amp; carPartStorage[Engine_Q] == TOYOTA)return false;
+    if (carPartStorage[CarType_Q] == TRUCK &amp;&amp; carPartStorage[Engine_Q] == WIA) return false;
+    if (carPartStorage[CarType_Q] == TRUCK &amp;&amp; carPartStorage[BrakeSystem_Q] == MANDO) return false;
+    if (carPartStorage[BrakeSystem_Q] == BOSCH_B &amp;&amp; carPartStorage[SteeringSystem_Q] != BOSCH_S)return false;</span>
+
+<span style = "background-color:#dfd">    return true;
+}</span>
 
 void CarFactory::runProducedCar()
 <span style = "background-color:#dfd">{
@@ -326,7 +76,7 @@ void CarFactory::runProducedCar()
         return;</span>
     }
 
-<span style = "background-color:#dfd">    if (carPartStroage[Engine_Q] == Engine::InvalidEngine)</span>
+<span style = "background-color:#dfd">    if (carPartStorage[Engine_Q] == Engine::InvalidEngine)</span>
     {
 <span style = "background-color:#dfd">        printf("¿£ÁøÀÌ °íÀå³ªÀÖ½À´Ï´Ù.\n");
         printf("ÀÚµ¿Â÷°¡ ¿òÁ÷ÀÌÁö ¾Ê½À´Ï´Ù.\n");
@@ -343,65 +93,65 @@ void CarFactory::runProducedCar()
 
 void CarFactory::proceedSteeringSystem()
 <span style = "background-color:#dfd">{
-    if (carPartStroage[SteeringSystem_Q] == SteeringSystem::BOSCH_S)
+    if (carPartStorage[SteeringSystem_Q] == SteeringSystem::BOSCH_S)
         printf("SteeringSystem : Bosch\n");
-    if (carPartStroage[SteeringSystem_Q] == SteeringSystem::MOBIS)
+    if (carPartStorage[SteeringSystem_Q] == SteeringSystem::MOBIS)
         printf("SteeringSystem : Mobis\n");
 }</span>
 
 void CarFactory::proceedBrakeSystem()
 <span style = "background-color:#dfd">{
-    if (carPartStroage[BrakeSystem_Q] == BrakeSystem::MANDO)
+    if (carPartStorage[BrakeSystem_Q] == BrakeSystem::MANDO)
         printf("Brake System : Mando");
-    if (carPartStroage[BrakeSystem_Q] == BrakeSystem::CONTINENTAL)
+    if (carPartStorage[BrakeSystem_Q] == BrakeSystem::CONTINENTAL)
         printf("Brake System : Continental\n");
-    if (carPartStroage[BrakeSystem_Q] == BrakeSystem::BOSCH_B)
+    if (carPartStorage[BrakeSystem_Q] == BrakeSystem::BOSCH_B)
         printf("Brake System : Bosch\n");
 }</span>
 
 void CarFactory::proceedEngine()
 <span style = "background-color:#dfd">{
-    if (carPartStroage[Engine_Q] == Engine::GM)
+    if (carPartStorage[Engine_Q] == Engine::GM)
         printf("Engine : GM\n");
-    if (carPartStroage[Engine_Q] == Engine::TOYOTA)
+    if (carPartStorage[Engine_Q] == Engine::TOYOTA)
         printf("Engine : TOYOTA\n");
-    if (carPartStroage[Engine_Q] == Engine::WIA)
+    if (carPartStorage[Engine_Q] == Engine::WIA)
         printf("Engine : WIA\n");
 }</span>
 
 void CarFactory::proceedCarType()
 <span style = "background-color:#dfd">{
-    if (carPartStroage[CarType_Q] == CarType::SEDAN)
+    if (carPartStorage[CarType_Q] == CarType::SEDAN)
         printf("Car Type : Sedan\n");
-    if (carPartStroage[CarType_Q] == CarType::SUV)
+    if (carPartStorage[CarType_Q] == CarType::SUV)
         printf("Car Type : SUV\n");
-    if (carPartStroage[CarType_Q] == CarType::TRUCK)
+    if (carPartStorage[CarType_Q] == CarType::TRUCK)
         printf("Car Type : Truck\n");
 }</span>
 
 void CarFactory::testProducedCar()
 <span style = "background-color:#dfd">{
-    if (carPartStroage[CarType_Q] == SEDAN &amp;&amp; carPartStroage[BrakeSystem_Q] == CONTINENTAL)</span>
+    if (carPartStorage[CarType_Q] == SEDAN &amp;&amp; carPartStorage[BrakeSystem_Q] == CONTINENTAL)</span>
     {
 <span style = "background-color:#dfd">        printf("ÀÚµ¿Â÷ ºÎÇ° Á¶ÇÕ Å×½ºÆ® °á°ú : FAIL\n");
         printf("Sedan¿¡´Â ContinentalÁ¦µ¿ÀåÄ¡ »ç¿ë ºÒ°¡\n");
     }
-    else if (carPartStroage[CarType_Q] == SUV &amp;&amp; carPartStroage[Engine_Q] == TOYOTA)</span>
+    else if (carPartStorage[CarType_Q] == SUV &amp;&amp; carPartStorage[Engine_Q] == TOYOTA)</span>
     {
 <span style = "background-color:#dfd">        printf("ÀÚµ¿Â÷ ºÎÇ° Á¶ÇÕ Å×½ºÆ® °á°ú : FAIL\n");
         printf("SUV¿¡´Â TOYOTA¿£Áø »ç¿ë ºÒ°¡\n");
     }
-    else if (carPartStroage[CarType_Q] == TRUCK &amp;&amp; carPartStroage[Engine_Q] == WIA)</span>
+    else if (carPartStorage[CarType_Q] == TRUCK &amp;&amp; carPartStorage[Engine_Q] == WIA)</span>
     {
 <span style = "background-color:#dfd">        printf("ÀÚµ¿Â÷ ºÎÇ° Á¶ÇÕ Å×½ºÆ® °á°ú : FAIL\n");
         printf("Truck¿¡´Â WIA¿£Áø »ç¿ë ºÒ°¡\n");
     }
-    else if (carPartStroage[CarType_Q] == TRUCK &amp;&amp; carPartStroage[BrakeSystem_Q] == MANDO)</span>
+    else if (carPartStorage[CarType_Q] == TRUCK &amp;&amp; carPartStorage[BrakeSystem_Q] == MANDO)</span>
     {
 <span style = "background-color:#dfd">        printf("ÀÚµ¿Â÷ ºÎÇ° Á¶ÇÕ Å×½ºÆ® °á°ú : FAIL\n");
         printf("Truck¿¡´Â MandoÁ¦µ¿ÀåÄ¡ »ç¿ë ºÒ°¡\n");
     }
-    else if (carPartStroage[BrakeSystem_Q] == BOSCH_B &amp;&amp; carPartStroage[SteeringSystem_Q] != BOSCH_S)</span>
+    else if (carPartStorage[BrakeSystem_Q] == BOSCH_B &amp;&amp; carPartStorage[SteeringSystem_Q] != BOSCH_S)</span>
     {
 <span style = "background-color:#dfd">        printf("ÀÚµ¿Â÷ ºÎÇ° Á¶ÇÕ Å×½ºÆ® °á°ú : FAIL\n");
         printf("Bosch¿£Áø¿¡´Â BoschÁ¶ÇâÀåÄ¡ ÀÌ¿Ü »ç¿ë ºÒ°¡\n");
@@ -410,7 +160,104 @@ void CarFactory::testProducedCar()
     {
 <span style = "background-color:#dfd">        printf("ÀÚµ¿Â÷ ºÎÇ° Á¶ÇÕ Å×½ºÆ® °á°ú : PASS\n");</span>
     }
-<span style = "background-color:#dfd">}</span></pre>
+<span style = "background-color:#dfd">}</span>
+
+CarFactory::CarPartType CarTypeBuilder::selectStep(int selectedNumber,
+<span style = "background-color:#dfd">    CarFactory::CarPartType curSelectionStep, int carPartStorage[]) {
+    if ((selectedNumber &gt;= 1 &amp;&amp; selectedNumber &lt;= 3) == false) {
+        printf("ERROR :: Â÷·® Å¸ÀÔÀº 1 ~ 3 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
+        CarFactory::delay(800);
+        return curSelectionStep;</span>
+    }
+
+<span style = "background-color:#dfd">    buildPart(selectedNumber, carPartStorage);
+    CarFactory::delay(800);
+    return CarFactory::CarPartType::Engine_Q;
+};</span>
+
+<span style = "background-color:#dfd">void CarTypeBuilder::buildPart(int selectedNumber, int carPartStorage[]) {
+    carPartStorage[CarFactory::CarType_Q] = selectedNumber;
+    if (selectedNumber == CarFactory::CarType::SEDAN)
+        printf("Â÷·® Å¸ÀÔÀ¸·Î SedanÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+    if (selectedNumber == CarFactory::CarType::SUV)
+        printf("Â÷·® Å¸ÀÔÀ¸·Î SUVÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+    if (selectedNumber == CarFactory::CarType::TRUCK)
+        printf("Â÷·® Å¸ÀÔÀ¸·Î TruckÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+};</span>
+
+CarFactory::CarPartType EngineTypeBuilder::selectStep(int selectedNumber,
+<span style = "background-color:#dfd">    CarFactory::CarPartType curSelectionStep, int carPartStorage[]) {
+    if ((selectedNumber &gt;= 0 &amp;&amp; selectedNumber &lt;= 4) == false) {
+        printf("ERROR :: ¿£ÁøÀº 1 ~ 4 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
+        CarFactory::delay(800);
+        return curSelectionStep;</span>
+    }
+
+<span style = "background-color:#dfd">    if (selectedNumber == REWIND) return CarFactory::CarPartType::CarType_Q;</span>
+
+<span style = "background-color:#dfd">    buildPart(selectedNumber, carPartStorage);
+    CarFactory::delay(800);
+    return  CarFactory::CarPartType::BrakeSystem_Q;
+};</span>
+
+<span style = "background-color:#dfd">void EngineTypeBuilder::buildPart(int selectedNumber, int carPartStorage[]) {
+    carPartStorage[CarFactory::Engine_Q] = selectedNumber;
+    if (selectedNumber == CarFactory::Engine::GM)
+        printf("GM ¿£ÁøÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+    if (selectedNumber == CarFactory::Engine::TOYOTA)
+        printf("TOYOTA ¿£ÁøÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+    if (selectedNumber == CarFactory::Engine::WIA)
+        printf("WIA ¿£ÁøÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+};</span>
+
+
+CarFactory::CarPartType BrakeSystemBuilder::selectStep(int selectedNumber,
+<span style = "background-color:#dfd">    CarFactory::CarPartType curSelectionStep, int carPartStorage[]) {
+    if ((selectedNumber &gt;= 0 &amp;&amp; selectedNumber &lt;= 3) == false) {
+        printf("ERROR :: Á¦µ¿ÀåÄ¡´Â 1 ~ 3 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
+        CarFactory::delay(800);
+        return curSelectionStep;</span>
+    }
+
+<span style = "background-color:#dfd">    if (selectedNumber == REWIND) return CarFactory::CarPartType::Engine_Q;</span>
+
+<span style = "background-color:#dfd">    buildPart(selectedNumber, carPartStorage);
+    CarFactory::delay(800);
+    return CarFactory::CarPartType::SteeringSystem_Q;
+};</span>
+
+<span style = "background-color:#dfd">void BrakeSystemBuilder::buildPart(int selectedNumber, int carPartStorage[]) {
+    carPartStorage[CarFactory::BrakeSystem_Q] = selectedNumber;
+    if (selectedNumber == CarFactory::BrakeSystem::MANDO)
+        printf("MANDO Á¦µ¿ÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+    if (selectedNumber == CarFactory::BrakeSystem::CONTINENTAL)
+        printf("CONTINENTAL Á¦µ¿ÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+    if (selectedNumber == CarFactory::BrakeSystem::BOSCH_B)
+        printf("BOSCH Á¦µ¿ÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+};</span>
+
+CarFactory::CarPartType SteeringSystemBuilder::selectStep(int selectedNumber,
+<span style = "background-color:#dfd">    CarFactory::CarPartType curSelectionStep, int carPartStorage[]) {
+    if ((selectedNumber &gt;= 0 &amp;&amp; selectedNumber &lt;= 2) == false) {
+        printf("ERROR :: Á¶ÇâÀåÄ¡´Â 1 ~ 2 ¹üÀ§¸¸ ¼±ÅÃ °¡´É\n");
+        CarFactory::delay(800);
+        return curSelectionStep;</span>
+    }
+
+<span style = "background-color:#dfd">    if (selectedNumber == REWIND) return CarFactory::CarPartType::BrakeSystem_Q;</span>
+
+<span style = "background-color:#dfd">    buildPart(selectedNumber, carPartStorage);
+    CarFactory::delay(800);
+    return  CarFactory::CarPartType::Run_Test;
+};</span>
+
+<span style = "background-color:#dfd">void SteeringSystemBuilder::buildPart(int selectedNumber, int carPartStorage[]) {
+    carPartStorage[CarFactory::SteeringSystem_Q] = selectedNumber;
+    if (selectedNumber == CarFactory::SteeringSystem::BOSCH_S)
+        printf("BOSCH Á¶ÇâÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+    if (selectedNumber == CarFactory::SteeringSystem::MOBIS)
+        printf("MOBIS Á¶ÇâÀåÄ¡¸¦ ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.\n");
+};</span></pre>
         <hr />
         <table width="100%">
             <thead>

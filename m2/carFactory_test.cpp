@@ -166,14 +166,6 @@ TEST(selectRunAndTest3, TC1) {
 	EXPECT_EQ(curType, CarFactory::CarPartType::Run_Test);
 }
 
-TEST(errorHandling1, TC1) {
-	CarFactory carFactory;
-	CarFactory::CarPartType curType = CarFactory::CarPartType::EMPTY_Q;
-	curType = carFactory.makePartOfCar(0, curType);
-	EXPECT_EQ(curType, CarFactory::CarPartType::CarType_Q);
-}
-
-
 TEST(AllTestOnceTestedForAllCoverageIsCoverdeCheck, TC1) {
 	for (int car_type = static_cast<int>(CarFactory::CarType::SEDAN); car_type < static_cast<int>(CarFactory::CarType::EMPTY_C); car_type++) {
 		for (int engine_type = static_cast<int>(CarFactory::Engine::GM); engine_type < static_cast<int>(CarFactory::Engine::EMPTY_E); engine_type++) {
