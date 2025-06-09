@@ -1,97 +1,5 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-#define CLEAR_SCREEN "\033[H\033[2J"
-
-enum CarPartType
-{
-    CarType_Q,
-    Engine_Q,
-    BrakeSystem_Q,
-    SteeringSystem_Q,
-    Run_Test,
-};
-
-enum CarType
-{
-    SEDAN = 1,
-    SUV,
-    TRUCK
-};
-
-enum Engine
-{
-    GM = 1,
-    TOYOTA,
-    WIA,
-    InvalidEngine
-};
-
-enum BrakeSystem
-{
-    MANDO = 1,
-    CONTINENTAL,
-    BOSCH_B
-};
-
-enum SteeringSystem
-{
-    BOSCH_S = 1,
-    MOBIS
-};
-
-enum RunAndTest
-{
-    RUN = 1,
-    TEST
-};
-
-const int REWIND = 0;
-
-int carPartStroage[10];
-
-void selectCarType(int answer);
-void selectEngine(int answer);
-void selectbrakeSystem(int answer);
-void selectSteeringSystem(int answer);
-void runProducedCar();
-void proceedSteeringSystem();
-void proceedBrakeSystem();
-void proceedEngine();
-void proceedCarType();
-void testProducedCar();
-void delay(int ms);
-
-CarPartType makePartOfCar(int selectedNumber, CarPartType curSelectionStep);
-
-CarPartType selectRunAndTest(int selectedNumber, CarPartType curSelectionStep);
-
-CarPartType selectSteeringSystem(int selectedNumber, CarPartType curSelectionStep);
-
-CarPartType selectBrakeSystem(int selectedNumber, CarPartType curSelectionStep);
-
-CarPartType selectEngineType(int selectedNumber, CarPartType curSelectionStep);
-
-CarPartType selectCarType(int selectedNumber, CarPartType step);
-
-bool checkUserSelectionIsNumber(char  buf[100]);
-
-void getUserSelection(char  buf[100]);
-
-bool exitSelected(char  buf[100]);
-
-void printSelectionOfStep(CarPartType step);
-
-void printSelectionOfRunAndTest();
-
-void printSelectionOfSteeringSystem();
-
-void printSelectionOfBrakeSystem();
-
-void printSelectionOfEngine();
-
-void printSelectionOfCarType();
+#include "carFactory.hpp"
+#pragma once
 
 void delay(int ms)
 {
@@ -108,23 +16,21 @@ void delay(int ms)
     }
 }
 
-int main()
+void CarFactory::makeCar()
 {
     char userInputBuffer[100];
-    CarPartType curSelectionStep = CarType_Q;
-
     while (1)
     {
         printSelectionOfStep(curSelectionStep);
         getUserSelection(userInputBuffer);
-        if (exitSelected(userInputBuffer)==true) break;
+        if (exitSelected(userInputBuffer) == true) break;
         if (checkUserSelectionIsNumber(userInputBuffer) == false) continue;
         int selectedNumber = strtol(userInputBuffer, NULL, 10);
-        curSelectionStep = makePartOfCar(selectedNumber, curSelectionStep);  
+        curSelectionStep = makePartOfCar(selectedNumber, curSelectionStep);
     }
 }
 
-void printSelectionOfStep(CarPartType step)
+void CarFactory::printSelectionOfStep(CarPartType step)
 {
     if (step == CarType_Q) printSelectionOfCarType();
     if (step == Engine_Q) printSelectionOfEngine();
@@ -137,7 +43,7 @@ void printSelectionOfStep(CarPartType step)
 }
 
 
-void getUserSelection(char  buf[100])
+void CarFactory::getUserSelection(char  buf[100])
 {
     fgets(buf, sizeof(buf), stdin);
 
@@ -147,7 +53,7 @@ void getUserSelection(char  buf[100])
     strtok_s(buf, "\n", &context);
 }
 
-bool exitSelected(char buf[100])
+bool CarFactory::exitSelected(char buf[100])
 {
     bool isExitSelected = false;
 
@@ -161,12 +67,12 @@ bool exitSelected(char buf[100])
 }
 
 
-bool checkUserSelectionIsNumber(char  buf[100])
+bool CarFactory::checkUserSelectionIsNumber(char  buf[100])
 {
     bool isUserInputNumber = true;
     char* checkNumber;
 
-    strtol(buf, &checkNumber, 10); 
+    strtol(buf, &checkNumber, 10);
 
     if (*checkNumber != '\0')
     {
@@ -179,30 +85,30 @@ bool checkUserSelectionIsNumber(char  buf[100])
 
 }
 
-CarPartType makePartOfCar(int selectedNumber, CarPartType curSelectionStep)
+CarFactory::CarPartType CarFactory::makePartOfCar(int selectedNumber, CarPartType curSelectionStep)
 {
     if (curSelectionStep == CarType_Q) return selectCarType(selectedNumber, curSelectionStep);
     if (curSelectionStep == Engine_Q) return selectEngineType(selectedNumber, curSelectionStep);
     if (curSelectionStep == BrakeSystem_Q) return selectBrakeSystem(selectedNumber, curSelectionStep);
-    if (curSelectionStep == SteeringSystem_Q) return selectSteeringSystem(selectedNumber, curSelectionStep); 
+    if (curSelectionStep == SteeringSystem_Q) return selectSteeringSystem(selectedNumber, curSelectionStep);
     if (curSelectionStep == Run_Test) return selectRunAndTest(selectedNumber, curSelectionStep);
     return CarPartType::CarType_Q;
 }
 
-CarPartType selectCarType(int selectedNumber, CarPartType curSelectionStep)
-{
-    if ((selectedNumber >= 1 && selectedNumber <= 3) == false) {
-        printf("ERROR :: 차량 타입은 1 ~ 3 범위만 선택 가능\n");
+CarFactory::CarPartType CarFactory::CarFactory::selectCarType(int selectedNumber, CarPartType curSelectionStep)
+    {
+        if ((selectedNumber >= 1 && selectedNumber <= 3) == false) {
+            printf("ERROR :: 차량 타입은 1 ~ 3 범위만 선택 가능\n");
+            delay(800);
+            return curSelectionStep;
+        }
+
+        selectCarType(selectedNumber);
         delay(800);
-        return curSelectionStep;
+        return CarPartType::Engine_Q;
     }
 
-    selectCarType(selectedNumber);
-    delay(800);
-    return CarPartType::Engine_Q;
-}
-
-CarPartType selectEngineType(int selectedNumber, CarPartType curSelectionStep)
+CarFactory::CarPartType CarFactory::selectEngineType(int selectedNumber, CarPartType curSelectionStep)
 {
     if ((selectedNumber >= 0 && selectedNumber <= 4) == false) {
         printf("ERROR :: 엔진은 1 ~ 4 범위만 선택 가능\n");
@@ -217,7 +123,7 @@ CarPartType selectEngineType(int selectedNumber, CarPartType curSelectionStep)
     return  CarPartType::BrakeSystem_Q;
 }
 
-CarPartType selectBrakeSystem(int selectedNumber, CarPartType curSelectionStep)
+CarFactory::CarPartType CarFactory::selectBrakeSystem(int selectedNumber, CarPartType curSelectionStep)
 {
     if ((selectedNumber >= 0 && selectedNumber <= 3) == false) {
         printf("ERROR :: 제동장치는 1 ~ 3 범위만 선택 가능\n");
@@ -232,7 +138,7 @@ CarPartType selectBrakeSystem(int selectedNumber, CarPartType curSelectionStep)
     return CarPartType::SteeringSystem_Q;
 }
 
-CarPartType selectSteeringSystem(int selectedNumber, CarPartType curSelectionStep)
+CarFactory::CarPartType CarFactory::selectSteeringSystem(int selectedNumber, CarPartType curSelectionStep)
 {
     if ((selectedNumber >= 0 && selectedNumber <= 2) == false) {
         printf("ERROR :: 조향장치는 1 ~ 2 범위만 선택 가능\n");
@@ -247,7 +153,7 @@ CarPartType selectSteeringSystem(int selectedNumber, CarPartType curSelectionSte
     return  CarPartType::Run_Test;
 }
 
-CarPartType selectRunAndTest(int selectedNumber, CarPartType curSelectionStep)
+CarFactory::CarPartType CarFactory::selectRunAndTest(int selectedNumber, CarPartType curSelectionStep)
 {
     if ((selectedNumber >= 0 && selectedNumber <= 2) == false) {
         printf("ERROR :: Run 또는 Test 중 하나를 선택 필요\n");
@@ -274,7 +180,7 @@ CarPartType selectRunAndTest(int selectedNumber, CarPartType curSelectionStep)
     }
 }
 
-void printSelectionOfRunAndTest()
+void CarFactory::printSelectionOfRunAndTest()
 {
     printf(CLEAR_SCREEN);
     printf("멋진 차량이 완성되었습니다.\n");
@@ -284,7 +190,7 @@ void printSelectionOfRunAndTest()
     printf("2. Test\n");
 }
 
-void printSelectionOfSteeringSystem()
+void CarFactory::printSelectionOfSteeringSystem()
 {
     printf(CLEAR_SCREEN);
     printf("어떤 조향장치를 선택할까요?\n");
@@ -293,7 +199,7 @@ void printSelectionOfSteeringSystem()
     printf("2. MOBIS\n");
 }
 
-void printSelectionOfBrakeSystem()
+void CarFactory::printSelectionOfBrakeSystem()
 {
     printf(CLEAR_SCREEN);
     printf("어떤 제동장치를 선택할까요?\n");
@@ -303,7 +209,7 @@ void printSelectionOfBrakeSystem()
     printf("3. BOSCH\n");
 }
 
-void printSelectionOfEngine()
+void CarFactory::printSelectionOfEngine()
 {
     printf(CLEAR_SCREEN);
     printf("어떤 엔진을 탑재할까요?\n");
@@ -314,7 +220,7 @@ void printSelectionOfEngine()
     printf("4. 고장난 엔진\n");
 }
 
-void printSelectionOfCarType()
+void CarFactory::printSelectionOfCarType()
 {
     printf(CLEAR_SCREEN);
 
@@ -330,7 +236,7 @@ void printSelectionOfCarType()
     printf("3. Truck\n");
 }
 
-void selectCarType(int selectedNumber)
+void CarFactory::selectCarType(int selectedNumber)
 {
     carPartStroage[CarType_Q] = selectedNumber;
     if (selectedNumber == CarType::SEDAN)
@@ -341,7 +247,7 @@ void selectCarType(int selectedNumber)
         printf("차량 타입으로 Truck을 선택하셨습니다.\n");
 }
 
-void selectEngine(int selectedNumber)
+void CarFactory::selectEngine(int selectedNumber)
 {
     carPartStroage[Engine_Q] = selectedNumber;
     if (selectedNumber == Engine::GM)
@@ -352,7 +258,7 @@ void selectEngine(int selectedNumber)
         printf("WIA 엔진을 선택하셨습니다.\n");
 }
 
-void selectbrakeSystem(int selectedNumber)
+void CarFactory::selectbrakeSystem(int selectedNumber)
 {
     carPartStroage[BrakeSystem_Q] = selectedNumber;
     if (selectedNumber == BrakeSystem::MANDO)
@@ -363,7 +269,7 @@ void selectbrakeSystem(int selectedNumber)
         printf("BOSCH 제동장치를 선택하셨습니다.\n");
 }
 
-void selectSteeringSystem(int selectedNumber)
+void CarFactory::selectSteeringSystem(int selectedNumber)
 {
     carPartStroage[SteeringSystem_Q] = selectedNumber;
     if (selectedNumber == SteeringSystem::BOSCH_S)
@@ -372,36 +278,18 @@ void selectSteeringSystem(int selectedNumber)
         printf("MOBIS 조향장치를 선택하셨습니다.\n");
 }
 
-int isValidCheck()
+int CarFactory::isValidCheck()
 {
-    if (carPartStroage[CarType_Q] == SEDAN && carPartStroage[BrakeSystem_Q] == CONTINENTAL)
-    {
-        return false;
-    }
-    else if (carPartStroage[CarType_Q] == SUV && carPartStroage[Engine_Q] == TOYOTA)
-    {
-        return false;
-    }
-    else if (carPartStroage[CarType_Q] == TRUCK && carPartStroage[Engine_Q] == WIA)
-    {
-        return false;
-    }
-    else if (carPartStroage[CarType_Q] == TRUCK && carPartStroage[BrakeSystem_Q] == MANDO)
-    {
-        return false;
-    }
-    else if (carPartStroage[BrakeSystem_Q] == BOSCH_B && carPartStroage[SteeringSystem_Q] != BOSCH_S)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+    if (carPartStroage[CarType_Q] == SEDAN && carPartStroage[BrakeSystem_Q] == CONTINENTAL)return false;
+    if (carPartStroage[CarType_Q] == SUV && carPartStroage[Engine_Q] == TOYOTA)return false;
+    if (carPartStroage[CarType_Q] == TRUCK && carPartStroage[Engine_Q] == WIA) return false;
+    if (carPartStroage[CarType_Q] == TRUCK && carPartStroage[BrakeSystem_Q] == MANDO) return false;
+    if (carPartStroage[BrakeSystem_Q] == BOSCH_B && carPartStroage[SteeringSystem_Q] != BOSCH_S)return false;
+
     return true;
 }
 
-void runProducedCar()
+void CarFactory::runProducedCar()
 {
     if (isValidCheck() == false)
     {
@@ -422,11 +310,9 @@ void runProducedCar()
     proceedSteeringSystem();
 
     printf("자동차가 동작됩니다.\n");
-    
-   
 }
 
-void proceedSteeringSystem()
+void CarFactory::proceedSteeringSystem()
 {
     if (carPartStroage[SteeringSystem_Q] == SteeringSystem::BOSCH_S)
         printf("SteeringSystem : Bosch\n");
@@ -434,7 +320,7 @@ void proceedSteeringSystem()
         printf("SteeringSystem : Mobis\n");
 }
 
-void proceedBrakeSystem()
+void CarFactory::proceedBrakeSystem()
 {
     if (carPartStroage[BrakeSystem_Q] == BrakeSystem::MANDO)
         printf("Brake System : Mando");
@@ -444,7 +330,7 @@ void proceedBrakeSystem()
         printf("Brake System : Bosch\n");
 }
 
-void proceedEngine()
+void CarFactory::proceedEngine()
 {
     if (carPartStroage[Engine_Q] == Engine::GM)
         printf("Engine : GM\n");
@@ -454,7 +340,7 @@ void proceedEngine()
         printf("Engine : WIA\n");
 }
 
-void proceedCarType()
+void CarFactory::proceedCarType()
 {
     if (carPartStroage[CarType_Q] == CarType::SEDAN)
         printf("Car Type : Sedan\n");
@@ -464,7 +350,7 @@ void proceedCarType()
         printf("Car Type : Truck\n");
 }
 
-void testProducedCar()
+void CarFactory::testProducedCar()
 {
     if (carPartStroage[CarType_Q] == SEDAN && carPartStroage[BrakeSystem_Q] == CONTINENTAL)
     {

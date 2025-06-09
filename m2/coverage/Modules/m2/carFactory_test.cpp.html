@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>carFactory_test.cpp</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+    <body onload="prettyPrint()">
+        <h4></h4>
+        <pre class="prettyprint lang-cpp linenums">
+#include "gmock/gmock.h"
+#include "carFactory.hpp"
+
+#include &lt;gtest/gtest.h&gt;
+using namespace testing;
+
+<span style = "background-color:#dfd">TEST(selectCarType0, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::CarType_Q;
+	curType = carFactory.makePartOfCar(0, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::CarType_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectCarType1, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::CarType_Q;
+	curType = carFactory.makePartOfCar(1, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Engine_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectCarType2, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::CarType_Q;
+	curType = carFactory.makePartOfCar(2, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Engine_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectCarType3, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::CarType_Q;
+	curType = carFactory.makePartOfCar(3, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Engine_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectEngine0, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Engine_Q;
+	curType = carFactory.makePartOfCar(0, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::CarType_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectEngine1, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Engine_Q;
+	curType = carFactory.makePartOfCar(1, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::BrakeSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectEngine2, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Engine_Q;
+	curType = carFactory.makePartOfCar(2, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::BrakeSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectEngine3, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Engine_Q;
+	curType = carFactory.makePartOfCar(3, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::BrakeSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectEngine4, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Engine_Q;
+	curType = carFactory.makePartOfCar(4, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::BrakeSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectEngine5, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Engine_Q;
+	curType = carFactory.makePartOfCar(5, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Engine_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectBrakeSystem0, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::BrakeSystem_Q;
+	curType = carFactory.makePartOfCar(0, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Engine_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectBrakeSystem1, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::BrakeSystem_Q;
+	curType = carFactory.makePartOfCar(1, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::SteeringSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectBrakeSystem2, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::BrakeSystem_Q;
+	curType = carFactory.makePartOfCar(2, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::SteeringSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectBrakeSystem3, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::BrakeSystem_Q;
+	curType = carFactory.makePartOfCar(3, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::SteeringSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectBrakeSystem4, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::BrakeSystem_Q;
+	curType = carFactory.makePartOfCar(4, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::BrakeSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectSteeringSystem0, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::SteeringSystem_Q;
+	curType = carFactory.makePartOfCar(0, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::BrakeSystem_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectSteeringSystem1, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::SteeringSystem_Q;
+	curType = carFactory.makePartOfCar(1, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Run_Test);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectSteeringSystem2, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::SteeringSystem_Q;
+	curType = carFactory.makePartOfCar(2, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Run_Test);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectSteeringSystem3, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::SteeringSystem_Q;
+	curType = carFactory.makePartOfCar(3, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::SteeringSystem_Q);
+}</span>
+
+
+<span style = "background-color:#dfd">TEST(selectRunAndTest0, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Run_Test;
+	curType = carFactory.makePartOfCar(0, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::CarType_Q);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectRunAndTest1, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Run_Test;
+	curType = carFactory.makePartOfCar(1, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Run_Test);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectRunAndTest2, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Run_Test;
+	curType = carFactory.makePartOfCar(2, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Run_Test);
+}</span>
+
+<span style = "background-color:#dfd">TEST(selectRunAndTest3, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::Run_Test;
+	curType = carFactory.makePartOfCar(3, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::Run_Test);
+}</span>
+
+<span style = "background-color:#dfd">TEST(errorHandling1, TC1) {
+	CarFactory carFactory;
+	CarFactory::CarPartType curType = CarFactory::CarPartType::EMPTY_Q;
+	curType = carFactory.makePartOfCar(0, curType);
+	EXPECT_EQ(curType, CarFactory::CarPartType::CarType_Q);
+}</span>
+
+
+<span style = "background-color:#dfd">TEST(AllTestOnceTestedForAllCoverageIsCoverdeCheck, TC1) {
+	for (int car_type = static_cast&lt;int&gt;(CarFactory::CarType::SEDAN); car_type &lt; static_cast&lt;int&gt;(CarFactory::CarType::EMPTY_C); car_type++) {
+		for (int engine_type = static_cast&lt;int&gt;(CarFactory::Engine::GM); engine_type &lt; static_cast&lt;int&gt;(CarFactory::Engine::EMPTY_E); engine_type++) {
+			for (int brake_type = static_cast&lt;int&gt;(CarFactory::BrakeSystem::MANDO); brake_type &lt; static_cast&lt;int&gt;(CarFactory::BrakeSystem::EMPTY_B); brake_type++) {
+				for (int steering_type = static_cast&lt;int&gt;(CarFactory::SteeringSystem::BOSCH_S); steering_type &lt; static_cast&lt;int&gt;(CarFactory::SteeringSystem::EMPTY_S); steering_type++) {
+					for (int run_and_test_type = static_cast&lt;int&gt;(CarFactory::RunAndTest::RUN); run_and_test_type &lt; static_cast&lt;int&gt;(CarFactory::RunAndTest::EMPTY_R); run_and_test_type++) {
+						CarFactory carFactory;
+						carFactory.makePartOfCar(car_type, CarFactory::CarPartType::CarType_Q);
+						carFactory.makePartOfCar(engine_type, CarFactory::CarPartType::Engine_Q);
+						carFactory.makePartOfCar(brake_type, CarFactory::CarPartType::BrakeSystem_Q);
+						carFactory.makePartOfCar(steering_type, CarFactory::CarPartType::SteeringSystem_Q);
+						carFactory.makePartOfCar(run_and_test_type, CarFactory::CarPartType::Run_Test);
+					}
+				}
+			}
+		}
+	}
+}</span></pre>
+        <hr />
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th align="center">
+                        <small>Generated by</small>
+                        <a href="https://github.com/OpenCppCoverage/OpenCppCoverage/releases">
+                            <strong>OpenCppCoverage (Version: 0.9.9.0)</strong>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </body>
+</html>
